@@ -87,7 +87,7 @@ const Splash: React.FC = () => {
   const { LoadingIndicator } = useAnimatedComponents()
   const [mounted, setMounted] = useState(false)
   const initializing = useRef(false)
-  const { initializeAgent } = useInitializeAgent()
+  const { initializeAgent, startMediation } = useInitializeAgent()
   const [{ version: TermsVersion }, logger, { showPreface, enablePushNotifications }, ocaBundleResolver] = useServices([
     TOKENS.SCREEN_TERMS,
     TOKENS.UTIL_LOGGER,
@@ -247,6 +247,9 @@ const Splash: React.FC = () => {
           return
         }
 
+        await startMediation(agent)
+        agent.mediationRecipient.initiateMessagePickup()
+
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
@@ -268,6 +271,7 @@ const Splash: React.FC = () => {
     initAgentAsyncEffect()
   }, [
     initializeAgent,
+    startMediation,
     mounted,
     store.authentication.didAuthenticate,
     store.onboarding.didConsiderBiometry,

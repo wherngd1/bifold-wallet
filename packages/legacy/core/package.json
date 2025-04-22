@@ -237,5 +237,11 @@
       "module",
       "typescript"
     ]
+  },
+  "resolutions": {
+    "react-native-reanimated": "3.4.2"
+  },
+  "overrides": {
+    "react-native-reanimated": "3.4.2"
   }
 }

@@ -86,6 +86,31 @@ const useInitializeAgent = () => {
     return newAgent
   }, [walletSecret, store.preferences.walletName, logger, indyLedgers])
 
+  const startMediation = useCallback(async (agent: Agent) => {
+    const invite = await agent.oob.parseInvitation(Config.MEDIATOR_URL!)
+    const outOfBandRecord = await agent.oob.findByReceivedInvitationId(invite.id)
+  
+    let [connection] = outOfBandRecord ? await agent.connections.findAllByOutOfBandId(outOfBandRecord.id) : []
+  
+    if (!connection) {
+      agent.config.logger.debug('Mediation connection does not exist, creating connection')
+  
+      const invite = await agent.oob.parseInvitation(Config.MEDIATOR_URL!)
+      const { connectionRecord: newConnection } = await agent.oob.receiveInvitation(invite)
+  
+      if (!newConnection) {
+        agent.config.logger.warn('No connection record to provision mediation.')
+        return
+      }
+  
+      connection = newConnection
+    }
+  
+    const readyConnection = connection.isReady ? connection : await agent.connections.returnWhenIsConnected(connection.id)
+  
+    return agent.mediationRecipient.provision(readyConnection)
+  }, [])
+
   const migrateIfRequired = useCallback(async (newAgent: Agent) => {
     if (!walletSecret?.id || !walletSecret.key) {
       return
@@ -158,7 +183,7 @@ const useInitializeAgent = () => {
     warmUpCache,
   ])
 
-  return { initializeAgent }
+  return { initializeAgent, startMediation };
 }
 
 export default useInitializeAgent

@@ -5,34 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@2060.io/ffi-napi@npm:^4.0.9":
-  version: 4.0.9
-  resolution: "@2060.io/ffi-napi@npm:4.0.9"
-  dependencies:
-    "@2060.io/ref-napi": ^3.0.6
-    debug: ^4.1.1
-    get-uv-event-loop-napi-h: ^1.0.5
-    node-addon-api: ^3.0.0
-    node-gyp: latest
-    node-gyp-build: ^4.2.1
-    ref-struct-di: ^1.1.0
-  checksum: 51cfe6dd3b880db0192400f9ee642602132dfb3a9072fd7ebcc2632ea62268cffbf97b4678c2b0dd966c80e2af4bfda4319dd63025c6408cc033961f177d5bf3
-  languageName: node
-  linkType: hard
-
-"@2060.io/ref-napi@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "@2060.io/ref-napi@npm:3.0.6"
-  dependencies:
-    debug: ^4.1.1
-    get-symbol-from-current-process-h: ^1.0.2
-    node-addon-api: ^3.0.0
-    node-gyp: latest
-    node-gyp-build: ^4.2.1
-  checksum: e4fd11e846d890151ac8d7d56304455bbad096e329c41c50453db87b0c14940bbc5e081b700f2e12650b86a9a964095c822b9549a42f11567e0d7f10a2285d93
-  languageName: node
-  linkType: hard
-
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.3.0
   resolution: "@ampproject/remapping@npm:2.3.0"
@@ -2255,8 +2227,6 @@ __metadata:
   version: 0.5.11
   resolution: "@credo-ts/node@npm:0.5.11"
   dependencies:
-    "@2060.io/ffi-napi": ^4.0.9
-    "@2060.io/ref-napi": ^3.0.6
     "@credo-ts/core": 0.5.11
     "@types/express": ^4.17.15
     express: ^4.17.1
@@ -7071,7 +7041,6 @@ __metadata:
     react-native-orientation-locker: ^1.6.0
     react-native-permissions: ^4.0.1
     react-native-qrcode-svg: 6.2.0
-    react-native-reanimated: 3.4.2
     react-native-safe-area-context: ^3.2.0
     react-native-scalable-image: ^1.1.0
     react-native-screens: ^3.24.0
@@ -9468,7 +9437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.1.0, debug@npm:^3.2.7":
+"debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -11807,13 +11776,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-symbol-from-current-process-h@npm:^1.0.1, get-symbol-from-current-process-h@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "get-symbol-from-current-process-h@npm:1.0.2"
-  checksum: d47cc1b9e0be27469e2af0555b21aaa5ebd114e8aa25bb0e2616c8abaebb7933e7b5bedcc31c6cad06e4df232e0fe280118001fec78da488f5f630b65cc1cae5
-  languageName: node
-  linkType: hard
-
 "get-tsconfig@npm:^4.7.5":
   version: 4.8.1
   resolution: "get-tsconfig@npm:4.8.1"
@@ -11832,15 +11794,6 @@ __metadata:
     debug: ^4.3.4
     fs-extra: ^11.2.0
   checksum: 3eda448a59fa1ba82ad4f252e58490fec586b644f2dc9c98ba3ab20e801ecc8a1bc1784829c474c9d188edb633d4dfd81c33894ca6117a33a16e8e013b41b40f
-  languageName: node
-  linkType: hard
-
-"get-uv-event-loop-napi-h@npm:^1.0.5":
-  version: 1.0.6
-  resolution: "get-uv-event-loop-napi-h@npm:1.0.6"
-  dependencies:
-    get-symbol-from-current-process-h: ^1.0.1
-  checksum: 3a2a9f9fc18196113d94496c79d5208c7e750cee6f65625fa34df195cab6bf9f122981c923e10cadd81d7f8da1ff92fe4020a7414d3ec16c820dee18e45bb29c
   languageName: node
   linkType: hard
 
@@ -16231,7 +16184,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:^3.0.0, node-addon-api@npm:^3.2.1":
+"node-addon-api@npm:^3.2.1":
   version: 3.2.1
   resolution: "node-addon-api@npm:3.2.1"
   dependencies:
@@ -16316,7 +16269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp-build@npm:^4.2.1, node-gyp-build@npm:^4.3.0":
+"node-gyp-build@npm:^4.3.0":
   version: 4.8.2
   resolution: "node-gyp-build@npm:4.8.2"
   bin:
@@ -18972,16 +18925,6 @@ __metadata:
     indent-string: ^5.0.0
     strip-indent: ^4.0.0
   checksum: 6944e7b1d8f3fd28c2515f5c605b9f7f0ea0f4edddf41890bbbdd4d9ee35abb7540c3b278f03ff827bd278bb6ff4a5bd8692ca406b748c5c1c3ce7355e9fbf8f
-  languageName: node
-  linkType: hard
-
-"ref-struct-di@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "ref-struct-di@npm:1.1.1"
-  dependencies:
-    debug: ^3.1.0
-    node-gyp: latest
-  checksum: 787dec1439628260b7928e5b53ff4cb83012e30e4a32b8b2d5198f138925b4bddf72de9da5c7ee6801c9f9c1427946bd911d58a249ce4f4babf2998cc69f0244
   languageName: node
   linkType: hard
 
