@@ -56,12 +56,13 @@ export default [
       'scripts/get-next-bump.ts',
       '**/jest.config.js',
       '**/metro.config.js',
+      '.changeset/commit.js',
       '.yarn/',
       'packages/verifier/build/',
       'packages/oca/build/',
       'packages/remote-logs/build/',
       'packages/react-native-attestation/build/',
-      'packages/legacy/core/lib/',
+      'packages/core/lib/',
     ],
   },
   {
@@ -83,7 +84,7 @@ export default [
     },
   },
   {
-    files: ['packages/legacy/core/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    files: ['packages/core/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',

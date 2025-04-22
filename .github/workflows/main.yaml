@@ -1,16 +1,19 @@
-name: Native Build & Test
+name: Native Build
 
 env:
-  cacheId: '8' # increment to expire the cache
+  cacheId: '11' # increment to expire the cache
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - 'packages/legacy/app/**'
-      - 'packages/legacy/core/**'
-      - 'packages/oca/**'
-      - '**/package-lock.json'
+      - '.github/workflows/main.yaml'
+      - '.github/workflows/publish.yaml'
+      - '.github/actions/setup-node/action.yaml'
+      - 'packages/**'
+      - 'samples/**'
+      - 'package.json'
+      - 'yarn.lock'
     types: [opened, synchronize, reopened, labeled]
   push:
     branches: [main]
@@ -31,28 +34,28 @@ jobs:
       - name: Configure ruby
         uses: ruby/setup-ruby@v1
         with:
-          working-directory: ./packages/legacy/app
+          working-directory: ./samples/app
 
       - name: Cache pod dependencies
         id: pod-cache
         uses: actions/cache@v3
         with:
-          path: packages/legacy/app/ios/Pods
+          path: samples/app/ios/Pods
           key: ${{ runner.os }}-pods-${{ env.cacheId }}-${{ hashFiles('**/Podfile.lock ') }}
           restore-keys: |
             ${{ runner.os }}-pods-${{ env.cacheId }}-
 
-      # Watch for changes to the `App` and `iOS` paths, use
+      # Watch for changes to the `src` and `iOS` paths, use
       # git for cache keys.
       - name: Generate cache key
         run: |
-          echo $(git rev-parse HEAD:packages/legacy/core/App) > ./dd-cache-key.txt
-          echo $(git rev-parse HEAD:packages/legacy/app/ios) >> ./dd-cache-key.txt
+          echo $(git rev-parse HEAD:packages/core/src) > ./dd-cache-key.txt
+          echo $(git rev-parse HEAD:samples/app/ios) >> ./dd-cache-key.txt
 
       - name: Cache derived data
         uses: actions/cache@v3
         with:
-          path: packages/legacy/app/ios/xbuild/Build
+          path: samples/app/ios/xbuild/Build
           key: ${{ runner.os }}-dd-xcode-${{ env.cacheId }}-${{ hashFiles('**/dd-cache-key.txt') }}
           restore-keys: |
             ${{ runner.os }}-dd-xcode-${{ env.cacheId }}-
@@ -64,11 +67,17 @@ jobs:
 
       - name: Build Workspace
         run: |
-          yarn lerna run build
+          yarn build
+
+      - name: Create .xcode.env.local file
+        working-directory: ./samples/app/ios
+        run: |
+          echo "export NODE_BINARY=$(which node)" > .xcode.env.local
+          cat .xcode.env.local
 
       - name: Install iOS dependencies
         # if: steps.pod-cache.outputs.cache-hit != 'true' || steps.npm-cache.outputs.cache-hit != 'true'
-        working-directory: ./packages/legacy/app
+        working-directory: ./samples/app
         run: |
           yarn run ios:setup && \
           git status && \
@@ -76,7 +85,7 @@ jobs:
 
       - name: Run release build
         # if: steps.pod-cache.outputs.cache-hit != 'true' || steps.npm-cache.outputs.cache-hit != 'true'
-        working-directory: ./packages/legacy/app/ios
+        working-directory: ./samples/app/ios
         run: |
           xcodebuild \
           -workspace AriesBifold.xcworkspace \
@@ -90,7 +99,7 @@ jobs:
       # This is a 1G file that adds little to speeding up
       # the build but does impact cache size.
       - name: Cleanup large artifacts
-        working-directory: ./packages/legacy/app/ios
+        working-directory: ./samples/app/ios
         run: |
           rm -rf build/Build/Products/Debug-iphoneos/AriesBifold.app
 
@@ -115,11 +124,11 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
           cache: 'gradle'
 
       - name: Setup Android SDK
-        working-directory: ./packages/legacy/app/android
+        working-directory: ./samples/app/android
         run: |
           set -x
           sudo mkdir -p /root/.android
@@ -149,8 +158,8 @@ jobs:
 
       - name: Build Workspace
         run: |
-          yarn lerna run build
+          yarn build
 
       - name: Android Release Build
-        working-directory: ./packages/legacy/app/android
+        working-directory: ./samples/app/android
         run: ./gradlew --no-daemon bundleRelease
